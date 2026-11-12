@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash({{PMS_REPORTS_TOOL}} *)",
+      "Bash({{EMAIL_CLI}} sheets spreadsheets values append *)",
+      "Bash({{EMAIL_CLI}} sheets spreadsheets values get *)",
+      "Edit(./runs/**)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.local)",
+      "Edit(./AUTONOMY.md)",
+      "Edit(./.claude/**)",
+      "Bash(rm *)",
+      "Bash(curl *)",
+      "Bash(wget *)",
+      "Bash(git push *)",
+      "WebFetch",
+      "WebSearch"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/autonomy-guard.py\""
+          }
+        ]
+      }
+    ]
+  }
+}
